@@ -17,7 +17,7 @@ defmodule Day01 do
       iex> Day01.get_calibration_value_for_line("two1nine", with_words: true)
       29
   
-      iex> Day01.get_calibration_value_for_line("eightwothree",with_words:  true)
+      iex> Day01.get_calibration_value_for_line("eightwothree", with_words:  true)
       83
   
       iex> Day01.get_calibration_value_for_line("abcone2threexyz", with_words: true)
@@ -60,7 +60,7 @@ defmodule Day01 do
         "seven" -> "7"
         "eight" -> "8"
         "nine" -> "9"
-        any -> any
+        digit -> digit
       end
     end)
   end
