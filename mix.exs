@@ -1,4 +1,4 @@
-defmodule Aoc2023.MixProject do
+defmodule AdventOfCode.MixProject do
   use Mix.Project
 
   def project do
