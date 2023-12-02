@@ -17,4 +17,10 @@ defmodule AdventOfCode do
     |> Stream.map(&Day02.parse_game_id/1)
     |> Enum.sum()
   end
+
+  def day2_part2() do
+    File.stream!("./problems/02.txt")
+    |> Stream.map(&Day02.get_game_record_power/1)
+    |> Enum.sum()
+  end
 end
