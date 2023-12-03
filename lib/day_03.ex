@@ -29,7 +29,32 @@ defmodule Day03 do
       iex> Day03.is_part_number({123, 1, 1, 3}, [".432.", ".123."])
       false
   """
-  def is_part_number({_, number_line, first_char, last_char}, schematic) do
+  def is_part_number(number, schematic) do
+    number |> get_symbols_for_number(schematic) |> Enum.empty?() |> Kernel.not()
+  end
+
+  @doc """
+  ## Example
+
+      iex> Day03.get_gear_ratios([{10, 0, 0, 1}, {20, 0, 3, 4}, {30, 2, 0, 1}, {40, 2, 3, 4}], ["10*20", ".....", "30#40"])
+      [200]
+  """
+  def get_gear_ratios(numbers, schematic) do
+    for number <- numbers,
+        {gear_char, gear_line} <- get_symbols_for_number(number, schematic, ~r/\*/) do
+      {gear_char * length(schematic) + gear_line, number}
+    end
+    |> Enum.group_by(fn {gear_id, _} -> gear_id end, fn {_, {number, _, _, _}} -> number end)
+    |> Map.values()
+    |> Enum.filter(&length(&1) === 2)
+    |> Enum.map(fn [a, b] -> a * b end)
+  end
+
+  defp get_symbols_for_number(
+         {_, number_line, first_char, last_char},
+         schematic,
+         filter \\ ~r/[^\w\s\.]/
+       ) do
     lines =
       for line_index <- (number_line - 1)..(number_line + 1),
           line_index in 0..upper_bound(schematic) do
@@ -38,15 +63,14 @@ defmodule Day03 do
 
     for char <- (first_char - 1)..(last_char + 1),
         {line, line_index} <- lines,
-        String.length(line) > 0 and char in 0..upper_bound(line) &&
-          (line_index !== number_line || char in [first_char - 1, last_char + 1]) do
-      is_symbol(line, char)
+        String.length(line) > 0 &&
+          char in 0..upper_bound(line) &&
+          (line_index !== number_line || char in [first_char - 1, last_char + 1]) &&
+          Regex.match?(filter, String.at(line, char)) do
+      {char, line_index}
     end
-    |> Enum.any?()
   end
 
   defp upper_bound(enumerable) when is_list(enumerable), do: length(enumerable) - 1
   defp upper_bound(enumerable) when is_binary(enumerable), do: String.length(enumerable) - 1
-
-  defp is_symbol(line, char), do: Regex.match?(~r/[^\w\.\s]/, String.at(line, char))
 end

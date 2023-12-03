@@ -33,4 +33,13 @@ defmodule AdventOfCode do
     |> Enum.map(&elem(&1, 0))
     |> Enum.sum()
   end
+
+  def day3_part2() do
+    schematic = File.stream!("./problems/03.txt") |> Enum.to_list()
+
+    schematic
+    |> Day03.parse_schematic_numbers()
+    |> Day03.get_gear_ratios(schematic)
+    |> Enum.sum()
+  end
 end

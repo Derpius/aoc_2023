@@ -13,5 +13,6 @@ defmodule Mix.Tasks.Solve do
 
   def run(["3"]) do
     AdventOfCode.day3_part1() |> IO.inspect(label: "Part 1")
+    AdventOfCode.day3_part2() |> IO.inspect(label: "Part 2")
   end
 end
