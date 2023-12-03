@@ -23,4 +23,14 @@ defmodule AdventOfCode do
     |> Stream.map(&Day02.get_game_record_power/1)
     |> Enum.sum()
   end
+
+  def day3_part1() do
+    schematic = File.stream!("./problems/03.txt") |> Enum.to_list()
+
+    schematic
+    |> Day03.parse_schematic()
+    |> Enum.filter(&Day03.is_part_number(&1, schematic))
+    |> Enum.map(&elem(&1, 0))
+    |> Enum.sum()
+  end
 end
