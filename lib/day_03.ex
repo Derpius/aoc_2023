@@ -2,10 +2,10 @@ defmodule Day03 do
   @doc """
   ## Example
 
-      iex> Day03.parse_schematic(["123...456", "...789..."])
+      iex> Day03.parse_schematic_numbers(["123...456", "...789..."])
       [{123, 0, 0, 2}, {456, 0, 6, 8}, {789, 1, 3, 5}]
   """
-  def parse_schematic(schematic) do
+  def parse_schematic_numbers(schematic) do
     for {schematic_line, line_index} <- Enum.with_index(schematic),
         [{index, length} | _] <- Regex.scan(~r/\d+/, schematic_line, return: :index) do
       {

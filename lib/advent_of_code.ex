@@ -28,7 +28,7 @@ defmodule AdventOfCode do
     schematic = File.stream!("./problems/03.txt") |> Enum.to_list()
 
     schematic
-    |> Day03.parse_schematic()
+    |> Day03.parse_schematic_numbers()
     |> Enum.filter(&Day03.is_part_number(&1, schematic))
     |> Enum.map(&elem(&1, 0))
     |> Enum.sum()
