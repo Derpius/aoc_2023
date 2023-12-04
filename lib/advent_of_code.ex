@@ -42,4 +42,12 @@ defmodule AdventOfCode do
     |> Day03.get_gear_ratios(schematic)
     |> Enum.sum()
   end
+
+  def day4_part1() do
+    File.stream!("./problems/04.txt")
+    |> Stream.map(fn card ->
+      card |> Day04.parse_scratchcard() |> Day04.get_scratchcard_value()
+    end)
+    |> Enum.sum()
+  end
 end

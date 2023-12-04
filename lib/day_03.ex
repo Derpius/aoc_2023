@@ -46,7 +46,7 @@ defmodule Day03 do
     end
     |> Enum.group_by(fn {gear_id, _} -> gear_id end, fn {_, {number, _, _, _}} -> number end)
     |> Map.values()
-    |> Enum.filter(&length(&1) === 2)
+    |> Enum.filter(&(length(&1) === 2))
     |> Enum.map(fn [a, b] -> a * b end)
   end
 
