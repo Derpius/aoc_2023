@@ -50,4 +50,11 @@ defmodule AdventOfCode do
     end)
     |> Enum.sum()
   end
+
+  def day4_part2() do
+    File.stream!("./problems/04.txt")
+    |> Stream.map(&Day04.parse_scratchcard/1)
+    |> Enum.to_list()
+    |> Day04.get_copies()
+  end
 end

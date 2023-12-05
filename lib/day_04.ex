@@ -18,14 +18,25 @@ defmodule Day04 do
       iex> Day04.get_scratchcard_value({MapSet.new([41, 48, 83, 86, 17]), MapSet.new([83, 86, 6, 31, 17, 9, 48, 53])})
       8
   """
-  def get_scratchcard_value({winning_numbers, chosen_numbers}) do
-    num_matching_numbers = chosen_numbers |> MapSet.intersection(winning_numbers) |> MapSet.size()
-
-    case num_matching_numbers do
+  def get_scratchcard_value(scratchcard) do
+    case get_matching_numbers(scratchcard) do
       0 -> 0
       x -> 2 ** (x - 1)
     end
   end
+
+  def get_copies(scratchcard_table) when is_list(scratchcard_table) do
+    scratchcard_table
+    |> List.foldr([], fn scratchcard, acc ->
+      matches = get_matching_numbers(scratchcard)
+      copies = acc |> Enum.slice(0, matches) |> Enum.sum()
+      [copies + 1 | acc]
+    end)
+    |> Enum.sum()
+  end
+
+  defp get_matching_numbers({winning_numbers, chosen_numbers}),
+    do: chosen_numbers |> MapSet.intersection(winning_numbers) |> MapSet.size()
 
   defp parse_numbers(numbers) do
     for <<number::binary-3 <- numbers <> " ">> do
