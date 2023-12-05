@@ -57,4 +57,10 @@ defmodule AdventOfCode do
     |> Enum.to_list()
     |> Day04.get_copies()
   end
+
+  def day5_part1() do
+    {seeds, maps} = "./problems/05.txt" |> File.read!() |> Day05.parse_almanac()
+
+    seeds |> Enum.map(&Day05.apply_maps(&1, maps)) |> Enum.min()
+  end
 end
