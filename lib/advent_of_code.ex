@@ -63,4 +63,23 @@ defmodule AdventOfCode do
 
     seeds |> Enum.map(&Day05.apply_maps(&1, maps)) |> Enum.min()
   end
+
+  def day5_part2() do
+    {seeds, maps} = "./problems/05.txt" |> File.read!() |> Day05.parse_almanac()
+
+    seed_ranges =
+      seeds
+      |> Enum.chunk_every(2)
+      |> Enum.map(fn [range_start, range_length] ->
+        range_start..(range_start + range_length - 1)
+      end)
+
+    lowest_location.._ =
+      seed_ranges
+      |> Day05.apply_maps(maps)
+      |> Enum.sort(fn a_start.._, b_start.._ -> a_start <= b_start end)
+      |> hd
+
+    lowest_location
+  end
 end

@@ -41,12 +41,12 @@ defmodule Day05Test do
   @parsed_example {
     [79, 14, 55, 13],
     [
-      [{-48, 98..99}, {2, 50..97}],
-      [{-15, 15..51}, {-15, 52..53}, {39, 0..14}],
-      [{-4, 53..60}, {-11, 11..52}, {42, 0..6}, {50, 7..10}],
+      [{2, 50..97}, {-48, 98..99}],
+      [{39, 0..14}, {-15, 15..51}, {-15, 52..53}],
+      [{42, 0..6}, {50, 7..10}, {-11, 11..52}, {-4, 53..60}],
       [{70, 18..24}, {-7, 25..94}],
-      [{-32, 77..99}, {36, 45..63}, {4, 64..76}],
-      [{-69, 69..69}, {1, 0..68}],
+      [{36, 45..63}, {4, 64..76}, {-32, 77..99}],
+      [{1, 0..68}, {-69, 69..69}],
       [{4, 56..92}, {-37, 93..96}]
     ]
   }
@@ -66,5 +66,23 @@ defmodule Day05Test do
     assert Day05.apply_maps(14, maps) == 43
     assert Day05.apply_maps(55, maps) == 86
     assert Day05.apply_maps(13, maps) == 35
+  end
+
+  test "example almanac range mapping" do
+    {seeds, maps} = @parsed_example
+
+    seed_ranges =
+      seeds
+      |> Enum.chunk_every(2)
+      |> Enum.map(fn [range_start, range_length] ->
+        range_start..(range_start + range_length - 1)
+      end)
+
+    mapped_ranges =
+      seed_ranges
+      |> Day05.apply_maps(maps)
+      |> Enum.sort(fn a_start.._, b_start.._ -> a_start <= b_start end)
+
+    assert mapped_ranges == [46..55, 56..59, 60..60, 82..84, 86..89, 94..96, 97..98]
   end
 end
