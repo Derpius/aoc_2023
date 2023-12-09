@@ -119,4 +119,14 @@ defmodule AdventOfCode do
     |> Enum.map(fn {%{bid: bid}, rank} -> bid * rank end)
     |> Enum.sum()
   end
+
+  def day7_part2() do
+    "./problems/07.txt"
+    |> File.stream!()
+    |> Stream.map(&Day07.parse_hand(&1, true))
+    |> Enum.sort(fn a, b -> !Day07.hand_a_beats_b(a, b, true) end)
+    |> Enum.with_index(1)
+    |> Enum.map(fn {%{bid: bid}, rank} -> bid * rank end)
+    |> Enum.sum()
+  end
 end
