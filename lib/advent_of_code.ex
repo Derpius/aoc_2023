@@ -129,4 +129,14 @@ defmodule AdventOfCode do
     |> Enum.map(fn {%{bid: bid}, rank} -> bid * rank end)
     |> Enum.sum()
   end
+
+  def day8_part1() do
+    [directions, _ | map] =
+      "./problems/08.txt"
+      |> File.stream!()
+      |> Stream.map(&Day08.parse_line/1)
+      |> Enum.to_list()
+
+    directions |> String.trim() |> Day08.follow_directions(map)
+  end
 end
