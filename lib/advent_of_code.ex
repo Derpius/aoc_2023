@@ -91,4 +91,22 @@ defmodule AdventOfCode do
       acc * Day06.get_num_valid_hold_times(race)
     end)
   end
+
+  def day6_part2() do
+    {string_time, string_distance} =
+      "./problems/06.txt"
+      |> File.read!()
+      |> Day06.parse_races()
+      |> Enum.reduce({"", ""}, fn {time, distance}, {acc_time, acc_distance} ->
+        {
+          acc_time <> Integer.to_string(time),
+          acc_distance <> Integer.to_string(distance)
+        }
+      end)
+
+    {time, _} = Integer.parse(string_time)
+    {distance, _} = Integer.parse(string_distance)
+
+    Day06.get_num_valid_hold_times({time, distance})
+  end
 end
