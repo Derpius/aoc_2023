@@ -109,4 +109,14 @@ defmodule AdventOfCode do
 
     Day06.get_num_valid_hold_times({time, distance})
   end
+
+  def day7_part1() do
+    "./problems/07.txt"
+    |> File.stream!()
+    |> Stream.map(&Day07.parse_hand/1)
+    |> Enum.sort(fn a, b -> !Day07.hand_a_beats_b(a, b) end)
+    |> Enum.with_index(1)
+    |> Enum.map(fn {%{bid: bid}, rank} -> bid * rank end)
+    |> Enum.sum()
+  end
 end
