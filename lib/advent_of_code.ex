@@ -160,4 +160,12 @@ defmodule AdventOfCode do
     |> Task.await_many()
     |> Enum.reduce(&Day08.lcm/2)
   end
+
+  def day9_part1() do
+    "./problems/09.txt"
+    |> File.stream!()
+    |> Stream.map(&Day09.parse_sequence/1)
+    |> Stream.map(&Day09.get_next_value/1)
+    |> Enum.sum()
+  end
 end
