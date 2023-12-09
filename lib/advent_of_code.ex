@@ -82,4 +82,13 @@ defmodule AdventOfCode do
 
     lowest_location
   end
+
+  def day6_part1() do
+    "./problems/06.txt"
+    |> File.read!()
+    |> Day06.parse_races()
+    |> Enum.reduce(1, fn race, acc ->
+      acc * Day06.get_num_valid_hold_times(race)
+    end)
+  end
 end
