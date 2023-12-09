@@ -28,6 +28,22 @@ defmodule Day09 do
     end
   end
 
+  @doc """
+  ## Example
+  
+      iex> Day09.get_previous_value([10, 13, 16, 21, 30, 45])
+      5
+  """
+  def get_previous_value([first | rest]) do
+    differences = get_differences([first | rest])
+
+    if Enum.all?(differences, &(&1 === 0)) do
+      first
+    else
+      first - get_previous_value(differences)
+    end
+  end
+
   defp get_differences([first, second | rest]) do
     [second - first | get_differences([second | rest])]
   end

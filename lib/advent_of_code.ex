@@ -168,4 +168,12 @@ defmodule AdventOfCode do
     |> Stream.map(&Day09.get_next_value/1)
     |> Enum.sum()
   end
+
+  def day9_part2() do
+    "./problems/09.txt"
+    |> File.stream!()
+    |> Stream.map(&Day09.parse_sequence/1)
+    |> Stream.map(&Day09.get_previous_value/1)
+    |> Enum.sum()
+  end
 end
