@@ -139,4 +139,25 @@ defmodule AdventOfCode do
 
     directions |> String.trim() |> Day08.follow_directions(map)
   end
+
+  def day8_part2() do
+    [directions, _ | map] =
+      "./problems/08.txt"
+      |> File.stream!()
+      |> Stream.map(&Day08.parse_line/1)
+      |> Enum.to_list()
+
+    starting_keys =
+      map |> Enum.filter(fn {key, _} -> String.ends_with?(key, "A") end) |> Enum.map(&elem(&1, 0))
+
+    for starting_key <- starting_keys do
+      Task.async(fn ->
+        directions
+        |> String.trim()
+        |> Day08.follow_directions(map, starting_key, &String.ends_with?(&1, "Z"))
+      end)
+    end
+    |> Task.await_many()
+    |> Enum.reduce(&Day08.lcm/2)
+  end
 end
