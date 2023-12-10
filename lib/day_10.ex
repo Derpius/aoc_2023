@@ -6,21 +6,53 @@ defmodule Day10 do
       |> Enum.with_index(fn element, index -> {index, element} end)
       |> Enum.into(%{})
 
-    start_pipe =
-      lines
-      |> Enum.find_value(fn {line_number, line} ->
-        column = index_of_substring(line, "S")
-        if column !== nil, do: {"S", {column, line_number}}
-      end)
-
-    {start_pipe, build_pipe_map(start_pipe, lines, %{})}
+    lines
+    |> Enum.find_value(fn {line_number, line} ->
+      column = index_of_substring(line, "S")
+      if column !== nil, do: {"S", {column, line_number}}
+    end)
+    |> build_pipe_map(lines, %{})
   end
 
-  defp build_pipe_map(pipe, lines, map) do
-    [first, second] = get_pipe_connections(pipe, lines)
-    updated_map = Map.merge(map, %{pipe => {first, second}})
+  def count_inside_area(connections) do
+    {max_x, max_y} =
+      connections
+      |> Map.keys()
+      |> Enum.reduce({0, 0}, fn {x, y}, {acc_x, acc_y} -> {max(x, acc_x), max(y, acc_y)} end)
 
-    case {Map.has_key?(map, first), Map.has_key?(map, second)} do
+    Enum.reduce(0..max_y, 0, fn y, acc ->
+      %{count: count} =
+        Enum.reduce(
+          0..max_x,
+          %{outside: true, count: 0},
+          fn x, %{outside: outside, count: count} ->
+            case Map.get(connections, {x, y}) do
+              pipe when pipe in ["|", "7", "F", "S"] ->
+                %{outside: !outside, count: count}
+
+              pipe when pipe in ["-", "J", "L"] ->
+                %{outside: outside, count: count}
+
+              _ when outside ->
+                %{outside: outside, count: count}
+
+              _ ->
+                %{outside: outside, count: count + 1}
+            end
+          end
+        )
+
+      acc + count
+    end)
+  end
+
+  defp build_pipe_map({pipe, coords}, lines, map) do
+    [first, second] = get_pipe_connections({pipe, coords}, lines)
+    updated_map = Map.merge(map, %{coords => pipe})
+    {_, first_coords} = first
+    {_, second_coords} = second
+
+    case {Map.has_key?(map, first_coords), Map.has_key?(map, second_coords)} do
       {true, true} -> updated_map
       {false, true} -> build_pipe_map(first, lines, updated_map)
       {true, false} -> build_pipe_map(second, lines, updated_map)

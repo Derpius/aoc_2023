@@ -178,11 +178,18 @@ defmodule AdventOfCode do
   end
 
   def day10_part1() do
-    {_, connections} =
+    connections =
       "./problems/10.txt"
       |> File.read!()
       |> Day10.parse_pipe_diagram()
 
     trunc(map_size(connections) / 2)
+  end
+
+  def day10_part2() do
+    "./problems/10.txt"
+    |> File.read!()
+    |> Day10.parse_pipe_diagram()
+    |> Day10.count_inside_area()
   end
 end
