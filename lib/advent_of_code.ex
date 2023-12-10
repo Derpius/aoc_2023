@@ -176,4 +176,13 @@ defmodule AdventOfCode do
     |> Stream.map(&Day09.get_previous_value/1)
     |> Enum.sum()
   end
+
+  def day10_part1() do
+    {_, connections} =
+      "./problems/10.txt"
+      |> File.read!()
+      |> Day10.parse_pipe_diagram()
+
+    trunc(map_size(connections) / 2)
+  end
 end
